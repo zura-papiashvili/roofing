@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Message</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .message-content {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-top: 10px;
+            background-color: #f9f9f9;
+        }
+        .message-header {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .message-detail {
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+    <h2>You have a new contact message</h2>
+    <div class="message-content">
+        <div class="message-header">Message from: {{ message_name }} ({{ message_email }})</div>
+        <div class="message-detail"><strong>Message:</strong> {{ message }}</div>
+    </div>
+</body>
+</html>

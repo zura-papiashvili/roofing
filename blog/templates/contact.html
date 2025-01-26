@@ -9,28 +9,49 @@
             <div class="card shadow-lg border-0">
                 <div class="card-body p-4">
                     <h2 class="text-center mb-4">Contact Us</h2>
+                    
+                    {% if messages %}
+                        <div class="alert alert-success" role="alert">
+                            {% for message in messages %}
+                                <p>{{ message }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    
                     <form action="{% url 'contact' %}" method="post" class="needs-validation" novalidate>
                         {% csrf_token %}
                         <div class="mb-3">
-                            <label for="name" class="form-label">Name:</label>
-                            <input type="text" id="name" name="name" class="form-control" placeholder="Your Full Name" required>
-                            <div class="invalid-feedback">
-                                Please enter your name.
-                            </div>
+                            <label for="message-name" class="form-label">Name:</label>
+                            <input type="text" id="message-name" name="message-name" class="form-control {% if form.message_name.errors %}is-invalid{% endif %}" placeholder="Your Full Name" required>
+                            {% if form.message_name.errors %}
+                                <div class="invalid-feedback">
+                                    {% for error in form.message_name.errors %}
+                                        <p>{{ error }}</p>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
                         </div>
                         <div class="mb-3">
-                            <label for="email" class="form-label">Email:</label>
-                            <input type="email" id="email" name="email" class="form-control" placeholder="yourname@example.com" required>
-                            <div class="invalid-feedback">
-                                Please enter a valid email address.
-                            </div>
+                            <label for="message-email" class="form-label">Email:</label>
+                            <input type="email" id="message-email" name="message-email" class="form-control {% if form.message_email.errors %}is-invalid{% endif %}" placeholder="yourname@example.com" required>
+                            {% if form.message_email.errors %}
+                                <div class="invalid-feedback">
+                                    {% for error in form.message_email.errors %}
+                                        <p>{{ error }}</p>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
                         </div>
                         <div class="mb-3">
                             <label for="message" class="form-label">Message:</label>
-                            <textarea id="message" name="message" class="form-control" placeholder="Your message here..." rows="4" required></textarea>
-                            <div class="invalid-feedback">
-                                Please enter your message.
-                            </div>
+                            <textarea id="message" name="message" class="form-control {% if form.message.errors %}is-invalid{% endif %}" placeholder="Your message here..." rows="4" required></textarea>
+                            {% if form.message.errors %}
+                                <div class="invalid-feedback">
+                                    {% for error in form.message.errors %}
+                                        <p>{{ error }}</p>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
                         </div>
                         <div class="d-grid">
                             <button type="submit" class="btn btn-primary btn-lg">Send Message</button>
@@ -43,7 +64,6 @@
 </div>
 
 <script>
-    // Example starter JavaScript for disabling form submissions if there are invalid fields
     (function () {
         'use strict'
         var forms = document.querySelectorAll('.needs-validation')
