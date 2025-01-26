@@ -1,0 +1,77 @@
+/* Default Light Mode */
+body {
+    background-color: #ffffff;
+    color: #212529;
+}
+
+.navbar-light {
+    background-color: #f8f9fa;
+}
+
+footer {
+    background-color: #f8f9fa;
+}
+
+/* Dark Mode */
+body.dark-mode {
+    background-color: #121212;
+    color: #f8f9fa;
+}
+
+.navbar-light.dark-mode {
+    background-color: #333333;
+}
+
+footer.dark-mode {
+    background-color: #333333;
+}
+
+/* app.css */
+body.dark-mode {
+    background-color: #121212;
+    color: #e0e0e0;
+}
+
+.navbar-dark.bg-dark {
+    background-color: #333 !important;
+    /* Darker navbar background for dark mode */
+}
+
+footer.bg-light {
+    background-color: #333 !important;
+    /* Dark footer for dark mode */
+    color: #e0e0e0;
+}
+
+/* app.css */
+#theme-toggle:hover {
+    background-color: #444;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+/* app.css */
+@media (max-width: 767px) {
+    .navbar-nav .nav-link {
+        font-size: 16px;
+        /* Smaller font size on mobile */
+    }
+}
+
+/* Initially, make the header visible */
+header {
+    opacity: 1;
+    transition: opacity 1s ease-in-out, top 1s ease-in-out;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 999;
+}
+
+/* When header is hidden, adjust opacity and move it off screen */
+header.hidden {
+    opacity: 0;
+    top: -60px;
+    /* Adjust this value based on the header height */
+}
