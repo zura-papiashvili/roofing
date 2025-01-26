@@ -10,7 +10,10 @@ from luzysonido.settings import EMAIL_HOST_USER
 def home(request):
     posts = Post.objects.all().order_by("-date")[:3]
     faqs = FAQ.objects.all()
-    return render(request, "blog/home.html", {"posts": posts, "faqs": faqs})
+    authors = Author.objects.all()[:3]
+    return render(
+        request, "blog/home.html", {"posts": posts, "faqs": faqs, "authors": authors}
+    )
 
 
 def about(request):

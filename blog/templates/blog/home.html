@@ -61,6 +61,32 @@
             </div>
         {% endfor %}
     </div>
+<!-- Authors Section -->
+<div class="container mt-5">
+    <h2 class="text-center mb-4 text-primary">Who We Are</h2>
+    <div class="row">
+        {% for author in authors %}
+            <div class="col-md-4 mb-4 d-flex align-items-stretch">
+                <div class="card shadow border-0 w-100 fade-up" style="border-radius: 15px; overflow: hidden;">
+                    <div class="card-body p-4 d-flex flex-column text-center">
+                        <img src="{{ author.image.url }}" class="rounded-circle mb-3" alt="{{ author.name }}" style="width: 100px; height: 100px; object-fit: cover;">
+                        <h3 class="card-title text-primary fw-bold">{{ author.name }}</h3>
+                        <p class="card-text text-muted">{{ author.bio }}</p>
+                        <div class="mt-auto">
+                            <!-- Add any additional content here if needed -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="alert alert-warning text-center" role="alert">
+                No authors are available.
+            </div>
+        {% endfor %}
+    </div>
+    <div class="text-center mt-4">
+        <a href="{% url 'about' %}" class="btn btn-primary">View All Authors</a>
+    </div>
 </div>
 <style>
     /* Customizing accordion button */
