@@ -46,3 +46,14 @@ class Comment(models.Model):
     user_email = models.EmailField()
     text = models.TextField(max_length=400)
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="comments")
+
+
+# frequently asked questions
+
+
+class FAQ(models.Model):
+    question = models.CharField(max_length=100)
+    answer = models.TextField(max_length=400)
+
+    def __str__(self):
+        return self.question

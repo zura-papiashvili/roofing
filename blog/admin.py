@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 
-from .models import Author, Tag, Post, Comment
+from .models import Author, Tag, Post, Comment, FAQ
 
 
 class AuthorAdmin(admin.ModelAdmin):
@@ -22,6 +22,12 @@ class CommentAdmin(admin.ModelAdmin):
     search_fields = ("user_name", "text")
 
 
+class FAQAdmin(admin.ModelAdmin):
+    list_display = ("question", "answer")
+    search_fields = ("question", "answer")
+
+
+admin.site.register(FAQ, FAQAdmin)
 admin.site.register(Author, AuthorAdmin)
 admin.site.register(Post, PostAdmin)
 admin.site.register(Tag)

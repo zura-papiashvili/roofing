@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Author, Post
+from .models import Author, Post, FAQ
 from django.core.mail import send_mail
 from django.conf import settings
 from django.template.loader import render_to_string
@@ -9,7 +9,8 @@ from luzysonido.settings import EMAIL_HOST_USER
 
 def home(request):
     posts = Post.objects.all().order_by("-date")[:3]
-    return render(request, "blog/home.html", {"posts": posts})
+    faqs = FAQ.objects.all()
+    return render(request, "blog/home.html", {"posts": posts, "faqs": faqs})
 
 
 def about(request):

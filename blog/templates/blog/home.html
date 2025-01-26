@@ -14,15 +14,14 @@
     <div class="row">
         {% for post in posts %}
             <div class="col-md-4 mb-4 d-flex align-items-stretch">
-                <div class="card shadow border-0 w-100" style="border-radius: 15px; overflow: hidden;">
+                <div class="card shadow border-0 w-100 fade-up" style="border-radius: 15px; overflow: hidden;">
                     <div class="card-body p-4 d-flex flex-column">
                         <h3 class="card-title text-primary fw-bold">{{ post.title }}</h3>
                         <p class="card-text text-muted">{{ post.content }}</p>
                         {% if post.youtube_url %}
                             <div class="ratio ratio-16x9 mt-3">
-                                <!-- Extract the video ID -->
                                 {% with post.youtube_url|slice:"17:" as video_id %}
-                                    <iframe src="https://www.youtube.com/embed/{{ video_id }}" allowfullscreen style="border-radius: 15px;"></iframe>
+                                    <iframe src="https://www.youtube.com/embed/{{ video_id }}" allowfullscreen style="border-radius: 15px;" rel="noopener noreferrer"></iframe>
                                 {% endwith %}
                             </div>
                         {% endif %}
@@ -30,14 +29,6 @@
                             <!-- Add any additional content here if needed -->
                         </div>
                     </div>
-                    <!-- Add subtle hover effect -->
-                    <style>
-                        .card:hover {
-                            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-                            transform: translateY(-5px);
-                            transition: all 0.3s ease-in-out;
-                        }
-                    </style>
                 </div>
             </div>
         {% empty %}
@@ -47,9 +38,42 @@
         {% endfor %}
     </div>
 </div>
-    <div class="text-center mt-4">
-        <a href="{% url 'posts' %}" class="btn btn-primary">View All Articles</a>
-    </div>
+<div class="text-center mt-4">
+    <a href="{% url 'posts' %}" class="btn btn-primary">View All Articles</a>
 </div>
-</div>
+
+<!-- JavaScript to trigger the fade-up animation when scrolled into view -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("visible");
+                    observer.unobserve(entry.target); // Stop observing once the element is in view
+                }
+            });
+        }, {
+            threshold: 0.2 // Trigger the animation when 20% of the card is visible
+        });
+
+        // Target all the cards to observe
+        const cards = document.querySelectorAll('.fade-up');
+        cards.forEach(card => observer.observe(card));
+    });
+</script>
+
+<!-- CSS for fade-up animation -->
+<style>
+    .fade-up {
+        opacity: 0;
+        transform: translateY(50px); /* Start position off-screen */
+        transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+    }
+
+    .fade-up.visible {
+        opacity: 1;
+        transform: translateY(0); /* End position */
+    }
+</style>
+
 {% endblock %}
