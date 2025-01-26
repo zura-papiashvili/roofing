@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="w-100" style="height: 100vh;">
+    <div class="text-center h-100">
+        <img src="{% static 'images/cover.jpg' %}" class="img-fluid rounded w-100 h-100" alt="Cover Image" style="object-fit: cover;">
+    </div>
+</div>
+<div class="container mt-4">
+    <h2 class="mb-4 text-center">New Articles</h2>
+    <div class="row">
+        {% for post in posts %}
+            <div class="col-md-4 mb-4 d-flex align-items-stretch">
+                <div class="card shadow border-0 w-100" style="border-radius: 15px; overflow: hidden;">
+                    <div class="card-body p-4 d-flex flex-column">
+                        <h3 class="card-title text-primary fw-bold">{{ post.title }}</h3>
+                        <p class="card-text text-muted">{{ post.content }}</p>
+                        {% if post.youtube_url %}
+                            <div class="ratio ratio-16x9 mt-3">
+                                <!-- Extract the video ID -->
+                                {% with post.youtube_url|slice:"17:" as video_id %}
+                                    <iframe src="https://www.youtube.com/embed/{{ video_id }}" allowfullscreen style="border-radius: 15px;"></iframe>
+                                {% endwith %}
+                            </div>
+                        {% endif %}
+                        <div class="mt-auto">
+                            <!-- Add any additional content here if needed -->
+                        </div>
+                    </div>
+                    <!-- Add subtle hover effect -->
+                    <style>
+                        .card:hover {
+                            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+                            transform: translateY(-5px);
+                            transition: all 0.3s ease-in-out;
+                        }
+                    </style>
+                </div>
+            </div>
+        {% empty %}
+            <div class="alert alert-warning text-center" role="alert">
+                No blog posts are available.
+            </div>
+        {% endfor %}
+    </div>
+</div>
+    <div class="text-center mt-4">
+        <a href="{% url 'posts' %}" class="btn btn-primary">View All Articles</a>
+    </div>
+</div>
+</div>
+{% endblock %}

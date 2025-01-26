@@ -1,0 +1,10 @@
+[TYPECHECK]
+ignored-modules = django
+
+[MESSAGES CONTROL]
+disable = unused-import
+
+[MESSAGES CONTROL]
+disable = missing-module-docstring
+
+
