@@ -71,7 +71,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "luzysonido.wsgi.application"
+WSGI_APPLICATION = "luzysonido.wsgi.app"
 
 
 # Database
