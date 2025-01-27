@@ -10,6 +10,9 @@
     </div>
 </div>
 <div class="container mt-4">
+    <div class="text-center mb-4">
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSekhdaorQRJHdRLAQX-UkUhnNe70nWLWcORJ6G_rc-mOUJemw/viewform?fbclid=IwZXh0bgNhZW0CMTEAAR2a0PrbCKNEfmqBdub2RY_l4H-boSy6Wkbe5UKEsmdHLKaUd0J0BbhY0Fw_aem_wGCXZE1LxgoZOG2woqhlTA" class="btn btn-success" target="_blank" rel="noopener noreferrer">Quiero Iniciarme</a>
+    </div>
     <h2 class="mb-4 text-center">Nuevos Videos</h2>
     <div class="row">
         {% for post in posts %}
@@ -34,18 +37,18 @@
             </div>
         {% empty %}
             <div class="alert alert-warning text-center" role="alert">
-                No blog posts are available.
+                Videos no disponibles.
             </div>
         {% endfor %}
     </div>
 </div>
 <div class="text-center mt-4">
-    <a href="{% url 'posts' %}" class="btn btn-primary">View All Articles</a>
+    <a href="{% url 'posts' %}" class="btn btn-primary"> Ver Todos los Videos</a>
 </div>
 
 <!-- FAQ Section using Bootstrap Accordion -->
 <div class="container mt-5">
-    <h2 class="text-center mb-4 text-primary">Frequently Asked Questions</h2>
+    <h2 class="text-center mb-4 text-primary">Preguntas Frecuentes</h2>
     <div class="accordion" id="faqAccordion">
         {% for faq in faqs %}
             <div class="accordion-item mb-3 shadow-sm rounded-3">
@@ -64,7 +67,7 @@
     </div>
 <!-- Authors Section -->
 <div class="container mt-5">
-    <h2 class="text-center mb-4 text-primary">Who We Are</h2>
+    <h2 class="text-center mb-4 text-primary">Autores Destacados</h2>
     <div class="row">
         {% for author in authors %}
             <div class="col-md-4 mb-4 d-flex align-items-stretch">
@@ -81,12 +84,12 @@
             </div>
         {% empty %}
             <div class="alert alert-warning text-center" role="alert">
-                No authors are available.
+                Autores no disponibles.
             </div>
         {% endfor %}
     </div>
     <div class="text-center mt-4">
-        <a href="{% url 'about' %}" class="btn btn-primary">View All Authors</a>
+        <a href="{% url 'about' %}" class="btn btn-primary"> Ver Todos los Autores</a>
     </div>
 </div>
 <style>
