@@ -12,8 +12,8 @@
                     <p class="card-text text-muted">{{ post.content }}</p>
                     {% if post.youtube_url %}
                         <div class="ratio ratio-16x9 mt-4">
-                            <!-- Extract the video ID -->
-                            {% with post.youtube_url|slice:"17:" as video_id %}
+                             {% load youtube_filters %}
+                                {% with post.youtube_url|extract_video_id as video_id %}
                                 <iframe src="https://www.youtube.com/embed/{{ video_id }}" allowfullscreen></iframe>
                             {% endwith %}
                         </div>
