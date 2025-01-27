@@ -1,56 +1,63 @@
+:root {
+    /* Light Mode Colors */
+    --background-light: #e4e0c7;
+    --text-light: #212529;
+    --navbar-light-bg: #cacfb9;
+    --footer-light-bg: #dde4b7;
+
+    /* Dark Mode Colors */
+    --background-dark: #312929;
+    --text-dark: #e0e0e0;
+    --navbar-dark-bg: #333333;
+    --footer-dark-bg: #4b4646;
+    --hover-bg-dark: #5a4e4e;
+}
+
 /* Default Light Mode */
 body {
-    background-color: #ffffff;
-    color: #212529;
+    background-color: var(--background-light);
+    color: var(--text-light);
 }
 
 .navbar-light {
-    background-color: #f8f9fa;
+    background-color: var(--navbar-light-bg);
 }
 
 footer {
-    background-color: #f8f9fa;
+    background-color: var(--footer-light-bg);
 }
 
 /* Dark Mode */
 body.dark-mode {
-    background-color: #121212;
-    color: #f8f9fa;
+    background-color: var(--background-dark);
+    color: var(--text-dark);
 }
 
 .navbar-light.dark-mode {
-    background-color: #333333;
+    background-color: var(--navbar-dark-bg);
 }
 
 footer.dark-mode {
-    background-color: #333333;
-}
-
-/* app.css */
-body.dark-mode {
-    background-color: #121212;
-    color: #e0e0e0;
+    background-color: var(--footer-dark-bg);
 }
 
 .navbar-dark.bg-dark {
-    background-color: #333 !important;
+    background-color: var(--navbar-dark-bg) !important;
     /* Darker navbar background for dark mode */
 }
 
 footer.bg-light {
-    background-color: #333 !important;
+    background-color: var(--navbar-dark-bg) !important;
     /* Dark footer for dark mode */
-    color: #e0e0e0;
+    color: var(--text-dark);
 }
 
-/* app.css */
 #theme-toggle:hover {
-    background-color: #444;
+    background-color: var(--hover-bg-dark);
     cursor: pointer;
     transition: background-color 0.3s;
 }
 
-/* app.css */
 @media (max-width: 767px) {
     .navbar-nav .nav-link {
         font-size: 16px;

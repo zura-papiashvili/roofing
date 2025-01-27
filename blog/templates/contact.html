@@ -8,7 +8,7 @@
         <div class="col-lg-6 col-md-8">
             <div class="card shadow-lg border-0">
                 <div class="card-body p-4">
-                    <h2 class="text-center mb-4">Contact Us</h2>
+                    <h2 class="text-center mb-4">Contáctenos</h2>
                     
                     {% if messages %}
                         <div class="alert alert-success" role="alert">
@@ -21,8 +21,8 @@
                     <form action="{% url 'contact' %}" method="post" class="needs-validation" novalidate>
                         {% csrf_token %}
                         <div class="mb-3">
-                            <label for="message-name" class="form-label">Name:</label>
-                            <input type="text" id="message-name" name="message-name" class="form-control {% if form.message_name.errors %}is-invalid{% endif %}" placeholder="Your Full Name" required>
+                            <label for="message-name" class="form-label">Nombre:</label>
+                            <input type="text" id="message-name" name="message-name" class="form-control {% if form.message_name.errors %}is-invalid{% endif %}" placeholder="Tu nombre" required>
                             {% if form.message_name.errors %}
                                 <div class="invalid-feedback">
                                     {% for error in form.message_name.errors %}
@@ -32,7 +32,7 @@
                             {% endif %}
                         </div>
                         <div class="mb-3">
-                            <label for="message-email" class="form-label">Email:</label>
+                            <label for="message-email" class="form-label">Coreo Electrónico:</label>
                             <input type="email" id="message-email" name="message-email" class="form-control {% if form.message_email.errors %}is-invalid{% endif %}" placeholder="yourname@example.com" required>
                             {% if form.message_email.errors %}
                                 <div class="invalid-feedback">
@@ -43,8 +43,8 @@
                             {% endif %}
                         </div>
                         <div class="mb-3">
-                            <label for="message" class="form-label">Message:</label>
-                            <textarea id="message" name="message" class="form-control {% if form.message.errors %}is-invalid{% endif %}" placeholder="Your message here..." rows="4" required></textarea>
+                            <label for="message" class="form-label"> Mensaje:</label>
+                            <textarea id="message" name="message" class="form-control {% if form.message.errors %}is-invalid{% endif %}" placeholder="Tu mensaje" rows="4" required></textarea>
                             {% if form.message.errors %}
                                 <div class="invalid-feedback">
                                     {% for error in form.message.errors %}
@@ -54,7 +54,7 @@
                             {% endif %}
                         </div>
                         <div class="d-grid">
-                            <button type="submit" class="btn btn-primary btn-lg">Send Message</button>
+                            <button type="submit" class="btn btn-primary btn-lg" style="background-color: #b08e19;">Enviar Mensaje</button>
                         </div>
                     </form>
                 </div>

@@ -57,7 +57,7 @@
 </head>
 <body>
     <header class="mb-4">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #130e61;">
         <div class="container-fluid">
             <!-- Logo and Site Name -->
             <a class="navbar-brand d-flex align-items-center" href="{% url 'home' %}">
@@ -72,16 +72,16 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="{% url 'home' %}">Home</a>
+                        <a class="nav-link text-white" href="{% url 'home' %}">Inicio</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="{% url 'about' %}">About</a>
+                        <a class="nav-link text-white" href="{% url 'about' %}">Acerca de</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="{% url 'posts' %}">Blogs</a>
+                        <a class="nav-link text-white" href="{% url 'posts' %}">Videos</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="{% url 'contact' %}">Contact</a>
+                        <a class="nav-link text-white" href="{% url 'contact' %}">Contacto</a>
                     </li>
                 </ul>
             </div>
@@ -101,7 +101,7 @@
     </main>
     
 </div>
-<footer class="mt-auto py-3 bg-light text-center">
+<footer class="mt-auto py-3 text-center text-white" style="background-color: #130e61;">
         <p>&copy; 2023 My Site</p>
 </footer>
 </body>

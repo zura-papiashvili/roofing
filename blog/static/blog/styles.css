@@ -1,48 +1,24 @@
-.fade-up {
-    opacity: 0;
-    transform: translateY(50px);
-    /* Start position off-screen */
-    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+/* Customizing accordion button */
+.accordion-button {
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
-.fade-up.visible {
-    opacity: 1;
-    transform: translateY(0);
-    /* End position */
+.accordion-button:hover {
+    background-color: #b08e19;
+    /* Change background color on hover */
+    transform: scale(1.05);
+    /* Slight scale effect on hover */
 }
 
-
-.faq-item {
-    margin-bottom: 1rem;
+/* Accordion item border and padding */
+.accordion-item {
     border: 1px solid #ddd;
+    padding: 5px;
     border-radius: 10px;
-    overflow: hidden;
 }
 
-.faq-question {
-    background-color: #007bff;
-    color: white;
-    padding: 1rem;
-    text-align: left;
-    width: 100%;
-    border: none;
-    cursor: pointer;
+/* Font size adjustments */
+.accordion-button {
     font-size: 1.1rem;
-    font-weight: bold;
-    text-transform: uppercase;
-}
-
-.faq-answer {
-    display: none;
-    padding: 1rem;
-    background-color: #f9f9f9;
-    font-size: 1rem;
-}
-
-.faq-answer.visible {
-    display: block;
-}
-
-.faq-question:hover {
-    background-color: #0056b3;
+    /* Slightly larger text for better readability */
 }
