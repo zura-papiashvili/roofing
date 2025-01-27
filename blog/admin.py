@@ -10,6 +10,7 @@ class AuthorAdmin(admin.ModelAdmin):
     search_fields = ("last_name", "first_name")
 
 
+@admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
     list_display = ("title", "date", "author")
     list_filter = ("author", "date", "tags")
@@ -29,6 +30,5 @@ class FAQAdmin(admin.ModelAdmin):
 
 admin.site.register(FAQ, FAQAdmin)
 admin.site.register(Author, AuthorAdmin)
-admin.site.register(Post, PostAdmin)
 admin.site.register(Tag)
 admin.site.register(Comment, CommentAdmin)
