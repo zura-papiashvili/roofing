@@ -4,19 +4,22 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-<div class="w-100" style="height: 100vh;">
+<!-- Include AOS CSS -->
+<link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+
+<div class="w-100" style="height: 100vh;" data-aos="fade-up">
     <div class="text-center h-100">
         <img src="{% static 'images/cover.jpg' %}" class="img-fluid rounded w-100 h-100" alt="Cover Image" style="object-fit: cover;">
     </div>
 </div>
 <div class="container mt-4">
-    <div class="text-center mb-4">
+    <div class="text-center mb-4" data-aos="fade-up">
         <a href="https://docs.google.com/forms/d/e/1FAIpQLSekhdaorQRJHdRLAQX-UkUhnNe70nWLWcORJ6G_rc-mOUJemw/viewform?fbclid=IwZXh0bgNhZW0CMTEAAR2a0PrbCKNEfmqBdub2RY_l4H-boSy6Wkbe5UKEsmdHLKaUd0J0BbhY0Fw_aem_wGCXZE1LxgoZOG2woqhlTA" class="btn btn-gold" target="_blank" rel="noopener noreferrer" style="background-color: #b08e19;">Quiero Iniciarme</a>
     </div>
-    <h2 class="mb-4 text-center">Nuevos Videos</h2>
+    <h2 class="mb-4 text-center" data-aos="fade-up">Nuevos Videos</h2>
     <div class="row">
         {% for post in posts %}
-            <div class="col-md-4 mb-4 d-flex align-items-stretch">
+            <div class="col-md-4 mb-4 d-flex align-items-stretch" data-aos="fade-left">
                 <div class="card shadow border-0 w-100 fade-up" style="border-radius: 15px; overflow: hidden;">
                     <div class="card-body p-4 d-flex flex-column">
                         <h3 class="card-title text-primary fw-bold">{{ post.title }}</h3>
@@ -36,24 +39,24 @@
                 </div>
             </div>
         {% empty %}
-            <div class="alert alert-warning text-center" role="alert">
+            <div class="alert alert-warning text-center" role="alert" data-aos="fade-up">
                 Videos no disponibles.
             </div>
         {% endfor %}
     </div>
 </div>
-<div class="text-center mt-4">
+<div class="text-center mt-4" data-aos="fade-up">
     <a href="{% url 'posts' %}" class="btn btn-primary" style="background-color: #b08e19;"> Ver Todos los Videos</a>
 </div>
 
 <!-- FAQ Section using Bootstrap Accordion -->
 <div class="container mt-5">
-    <h2 class="text-center mb-4 text-primary">Preguntas Frecuentes</h2>
+    <h2 class="text-center mb-4 text-primary" data-aos="fade-up">Preguntas Frecuentes</h2>
     <div class="accordion" id="faqAccordion">
         {% for faq in faqs %}
-            <div class="accordion-item mb-3 shadow-sm rounded-3">
+            <div class="accordion-item mb-3 shadow-sm rounded-3" data-aos="fade-right">
                 <h2 class="accordion-header" id="heading{{ forloop.counter }}">
-                    <button style="background-color: #b08e19;" class="accordion-button text-white  border-0 rounded-3 p-3 {% if forloop.first %}collapsed{% endif %}" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ forloop.counter }}" aria-expanded="false" aria-controls="collapse{{ forloop.counter }}">
+                    <button style="background-color: #b08e19;" class="accordion-button text-white border-0 rounded-3 p-3 {% if forloop.first %}collapsed{% endif %}" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ forloop.counter }}" aria-expanded="false" aria-controls="collapse{{ forloop.counter }}">
                         <i class="fas fa-question-circle me-2"></i>{{ faq.question }}
                     </button>
                 </h2>
@@ -65,12 +68,14 @@
             </div>
         {% endfor %}
     </div>
+</div>
+
 <!-- Authors Section -->
 <div class="container mt-5">
-    <h2 class="text-center mb-4 text-primary">Autores Destacados</h2>
+    <h2 class="text-center mb-4 text-primary" data-aos="fade-up">Autores Destacados</h2>
     <div class="row">
         {% for author in authors %}
-            <div class="col-md-4 mb-4 d-flex align-items-stretch">
+            <div class="col-md-4 mb-4 d-flex align-items-stretch" data-aos="fade-up">
                 <div class="card shadow border-0 w-100 fade-up" style="border-radius: 15px; overflow: hidden;">
                     <div class="card-body p-4 d-flex flex-column text-center">
                         <img src="{{ author.image.url }}" class="rounded-circle mb-3" alt="{{ author.name }}" style="width: 100px; height: 100px; object-fit: cover;">
@@ -83,16 +88,18 @@
                 </div>
             </div>
         {% empty %}
-            <div class="alert alert-warning text-center" role="alert">
+            <div class="alert alert-warning text-center" role="alert" data-aos="fade-up">
                 Autores no disponibles.
             </div>
         {% endfor %}
     </div>
-    <div class="text-center mt-4">
+    <div class="text-center mt-4" data-aos="fade-right">
         <a href="{% url 'about' %}" class="btn btn-gold" style="background-color: #b08e19;"> Ver Todos los Autores</a>
     </div>
 </div>
 
+<!-- Include AOS JavaScript -->
+{% comment %} <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script> {% endcomment %}
 
 
 <!-- JavaScript to enable Bootstrap's accordion -->
