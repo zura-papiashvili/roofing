@@ -33,6 +33,9 @@
     <div class="text-center mb-4" data-aos="fade-up">
         <a href="https://docs.google.com/forms/d/e/1FAIpQLSekhdaorQRJHdRLAQX-UkUhnNe70nWLWcORJ6G_rc-mOUJemw/viewform?fbclid=IwZXh0bgNhZW0CMTEAAR2a0PrbCKNEfmqBdub2RY_l4H-boSy6Wkbe5UKEsmdHLKaUd0J0BbhY0Fw_aem_wGCXZE1LxgoZOG2woqhlTA" class="btn btn-gold" target="_blank" rel="noopener noreferrer" style="background-color: #b08e19;">Quiero Iniciarme</a>
     </div>
+    <div class="text-center mb-4" data-aos="fade-up">
+        <a href="{% url 'restricted' %}" class="btn btn-gold" target="_blank" rel="noopener noreferrer" style="background-color: #b08e19;">Para Iniciados</a>
+    </div>
     <h2 class="mb-4 text-center" data-aos="fade-up">Nuevos Videos</h2>
     <div class="row">
         {% for post in posts %}

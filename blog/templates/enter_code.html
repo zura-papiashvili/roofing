@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Ingresar Código de Acceso{% endblock %}
+
+{% block content %}
+<h1>{{ page.title }}</h1>
+<p>Por favor, ingrese el código de acceso para ver el contenido:</p>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Enviar</button>
+</form>
+{% endblock %}

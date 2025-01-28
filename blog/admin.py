@@ -2,7 +2,16 @@ from django.contrib import admin
 
 # Register your models here.
 
-from .models import Author, Tag, Post, Comment, FAQ, CarouselImage, Carousel
+from .models import (
+    Author,
+    Tag,
+    Post,
+    Comment,
+    FAQ,
+    CarouselImage,
+    Carousel,
+    RestrictedPage,
+)
 
 
 class AuthorAdmin(admin.ModelAdmin):
@@ -38,6 +47,12 @@ class CarouselAdmin(admin.ModelAdmin):
     inlines = [CarouselImageInline]
     list_display = ("title", "description")
     search_fields = ("title", "description")
+
+
+@admin.register(RestrictedPage)
+class RestrictedPageAdmin(admin.ModelAdmin):
+    list_display = ("title", "access_code")
+    search_fields = ("title", "content")
 
 
 admin.site.register(FAQ, FAQAdmin)

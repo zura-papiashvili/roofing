@@ -1,11 +1,11 @@
-from django.shortcuts import render
-from .models import Author, Post, FAQ, Carousel
+from django.shortcuts import get_object_or_404, render
+from .models import Author, Post, FAQ, Carousel, RestrictedPage
 from django.core.mail import send_mail
 from django.conf import settings
 from django.template.loader import render_to_string
-
+from django.http import HttpResponseForbidden
+from .forms import AccessCodeForm
 from luzysonido.settings import EMAIL_HOST_USER
-import logging
 
 
 def home(request):
@@ -62,3 +62,18 @@ def contact(request):
         return render(request, "contact.html", {"message_name": message_name})
 
     return render(request, "contact.html", {})
+
+
+def restricted_page_view(request):
+    page = get_object_or_404(RestrictedPage)  # There is only one page, so just fetch it
+    form = AccessCodeForm(request.POST or None)
+
+    if request.method == "POST" and form.is_valid():
+        if form.cleaned_data["code"] == page.access_code:
+            return render(request, "restricted_page.html", {"page": page})
+        else:
+            # If the code doesn't match, deny access
+            return render(request, "restricted_denied.html", {"page": page})
+
+    # Render the form if the code hasn't been submitted yet
+    return render(request, "enter_code.html", {"form": form, "page": page})

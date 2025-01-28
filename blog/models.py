@@ -162,3 +162,18 @@ class CarouselImage(models.Model):
     class Meta:
         verbose_name = "Imagen del Carrusel"
         verbose_name_plural = "Imágenes del Carrusel"
+
+
+class RestrictedPage(models.Model):
+    title = models.CharField(max_length=100, verbose_name="Title")
+    content = models.TextField(verbose_name="Content")
+    access_code = models.CharField(
+        max_length=20, verbose_name="Access Code"
+    )  # The code for accessing the page
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name = "Restricted Page"
+        verbose_name_plural = "Restricted Pages"
