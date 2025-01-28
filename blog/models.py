@@ -61,6 +61,12 @@ class Post(models.Model):
     title = models.CharField(max_length=150, verbose_name="título")
     excerpt = models.CharField(max_length=200, null=True, verbose_name="resumen")
     date = models.DateField(auto_now=True, verbose_name="fecha")
+    access_type = models.CharField(
+        max_length=20,
+        choices=[("public", "Público"), ("private", "Privado")],
+        default="public",
+        verbose_name="tipo de acceso",
+    )
     slug = models.SlugField(unique=True, db_index=True, verbose_name="slug")
     youtube_url = models.URLField(null=True, verbose_name="URL de YouTube")
     content = models.TextField(

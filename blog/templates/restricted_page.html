@@ -5,4 +5,28 @@
 {% block content %}
 <h1>{{ page.title }}</h1>
 <p>{{ page.content }}</p>
+
+<div class="container mt-5">
+        <h2 class="mb-5 text-center display-4">Videos</h2>
+        {% for post in posts %}
+            <div class="card shadow-sm mb-5">
+                <div class="card-body">
+                    <h3 class="card-title text-primary">{{ post.title }}</h3>
+                    <p class="card-text text-muted">{{ post.content }}</p>
+                    {% if post.youtube_url %}
+                        <div class="ratio ratio-16x9 mt-4">
+                             {% load youtube_filters %}
+                                {% with post.youtube_url|extract_video_id as video_id %}
+                                <iframe src="https://www.youtube.com/embed/{{ video_id }}" allowfullscreen></iframe>
+                            {% endwith %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        {% empty %}
+            <div class="alert alert-warning text-center" role="alert">
+                Videos no disponibles.
+            </div>
+        {% endfor %}
+    </div>
 {% endblock %}

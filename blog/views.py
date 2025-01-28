@@ -9,7 +9,7 @@ from luzysonido.settings import EMAIL_HOST_USER
 
 
 def home(request):
-    posts = Post.objects.all().order_by("-date")[:3]
+    posts = Post.objects.filter(access_type="public").order_by("-date")[:3]
     faqs = FAQ.objects.all()
     authors = Author.objects.all()[:3]
     carousel = Carousel.objects.filter(title="home-cover").first()
@@ -31,7 +31,7 @@ def about(request):
 
 
 def posts(request):
-    posts = Post.objects.all().order_by("-date")
+    posts = Post.objects.filter(access_type="public").order_by("-date")
     return render(request, "blog/posts.html", {"posts": posts})
 
 
@@ -70,14 +70,18 @@ def restricted_page_view(request):
 
     # Check if the user has already entered the correct code
     if request.session.get("access_granted", False):
-        return render(request, "restricted_page.html", {"page": page})
+        posts = Post.objects.filter(access_type="private").order_by("-date")
+        return render(request, "restricted_page.html", {"page": page, "posts": posts})
 
     if request.method == "POST" and form.is_valid():
 
         if form.cleaned_data["code"] == page.access_code:
             # Store that the user has entered the correct code
             request.session["access_granted"] = True
-            return render(request, "restricted_page.html", {"page": page})
+            posts = Post.objects.filter(access_type="private").order_by("-date")
+            return render(
+                request, "restricted_page.html", {"page": page, "posts": posts}
+            )
         else:
             # If the code doesn't match, deny access
             return render(request, "restricted_denied.html", {"page": page})
