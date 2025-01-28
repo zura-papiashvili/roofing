@@ -1,7 +1,18 @@
 from django.db import models
 from django.core.validators import MinLengthValidator
+from django.core.exceptions import ValidationError
+from .utils import compress_and_optimize_image
+
 
 # Create your models here.
+
+
+def validate_image_size(image):
+    """Validates image size to ensure it doesn't exceed a specific limit."""
+    filesize = image.file.size
+    limit_mb = 10  # Max size in MB
+    if filesize > limit_mb * 1024 * 1024:
+        raise ValidationError(f"Max size of image is {limit_mb} MB")
 
 
 class Tag(models.Model):
@@ -19,7 +30,12 @@ class Author(models.Model):
     first_name = models.CharField(max_length=100, verbose_name="nombre")
     last_name = models.CharField(max_length=100, verbose_name="apellido")
     email_address = models.EmailField(verbose_name="correo electrónico")
-    image = models.ImageField(upload_to="authors", null=True, verbose_name="imagen")
+    image = models.ImageField(
+        upload_to="authors",
+        null=True,
+        verbose_name="imagen",
+        validators=[validate_image_size],
+    )
     bio = models.TextField(
         validators=[MinLengthValidator(10)], null=True, verbose_name="biografía"
     )
@@ -29,6 +45,12 @@ class Author(models.Model):
 
     def __str__(self):
         return self.full_name()
+
+    def save(self, *args, **kwargs):
+        if self.image:
+            # Compress and optimize image before saving
+            self.image = compress_and_optimize_image(self.image)
+        super().save(*args, **kwargs)
 
     class Meta:
         verbose_name = "Autor"
