@@ -68,8 +68,15 @@ def restricted_page_view(request):
     page = get_object_or_404(RestrictedPage)  # There is only one page, so just fetch it
     form = AccessCodeForm(request.POST or None)
 
+    # Check if the user has already entered the correct code
+    if request.session.get("access_granted", False):
+        return render(request, "restricted_page.html", {"page": page})
+
     if request.method == "POST" and form.is_valid():
+
         if form.cleaned_data["code"] == page.access_code:
+            # Store that the user has entered the correct code
+            request.session["access_granted"] = True
             return render(request, "restricted_page.html", {"page": page})
         else:
             # If the code doesn't match, deny access
