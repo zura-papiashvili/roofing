@@ -112,3 +112,53 @@ class FAQ(models.Model):
     class Meta:
         verbose_name = "Pregunta frecuente"
         verbose_name_plural = "Preguntas frecuentes"
+
+
+#  content for pages
+# Carousel model
+class Carousel(models.Model):
+    title = models.CharField(max_length=100, verbose_name="Título")
+    description = models.TextField(
+        max_length=400, verbose_name="Descripción", blank=True, null=True
+    )
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name = "Carrusel"
+        verbose_name_plural = "Carruseles"
+
+
+# CarouselImage model
+class CarouselImage(models.Model):
+    carousel = models.ForeignKey(
+        Carousel,
+        related_name="images",
+        on_delete=models.CASCADE,
+        verbose_name="Carrusel",
+    )
+    image = models.ImageField(
+        upload_to="carousel/images",
+        verbose_name="Imagen",
+        validators=[
+            validate_image_size
+        ],  # Replace with your actual image validator if needed
+    )
+    caption = models.CharField(
+        max_length=200, verbose_name="Pie de foto", blank=True, null=True
+    )
+
+    url = models.URLField(max_length=200, verbose_name="URL", blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        # Compress and optimize image before saving
+        self.image = compress_and_optimize_image(self.image)
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"Imagen de {self.carousel.title}"
+
+    class Meta:
+        verbose_name = "Imagen del Carrusel"
+        verbose_name_plural = "Imágenes del Carrusel"

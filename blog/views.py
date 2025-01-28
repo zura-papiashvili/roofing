@@ -1,18 +1,23 @@
 from django.shortcuts import render
-from .models import Author, Post, FAQ
+from .models import Author, Post, FAQ, Carousel
 from django.core.mail import send_mail
 from django.conf import settings
 from django.template.loader import render_to_string
 
 from luzysonido.settings import EMAIL_HOST_USER
+import logging
 
 
 def home(request):
     posts = Post.objects.all().order_by("-date")[:3]
     faqs = FAQ.objects.all()
     authors = Author.objects.all()[:3]
+    carousel = Carousel.objects.filter(title="home-cover").first()
+    images = carousel.images.all()
     return render(
-        request, "blog/home.html", {"posts": posts, "faqs": faqs, "authors": authors}
+        request,
+        "blog/home.html",
+        {"posts": posts, "faqs": faqs, "authors": authors, "carousel": images},
     )
 
 
