@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+
+{% block title %}Product List{% endblock %}
+
+{% block content %}
+    <h1>Products</h1>
+    <div class="container">
+    <!-- Filters Form -->
+    <form method="get" class="mb-4">
+        <div class="row">
+            <!-- Search Bar -->
+            <div class="col-md-3">
+                <label for="search">Search</label>
+                <input type="text" class="form-control" id="search" name="search" value="{{ search }}" placeholder="Search products...">
+            </div>
+            <!-- Type Filter -->
+            <div class="col-md-3">
+                <label for="type">Type</label>
+                <input type="text" class="form-control" id="type" name="type" value="{{ product_type }}" placeholder="Filter by type">
+            </div>
+            <!-- Price Filters -->
+            <div class="col-md-3">
+                <label for="min_price">Min Price</label>
+                <input type="number" class="form-control" id="min_price" name="min_price" value="{{ min_price }}" placeholder="Min Price">
+            </div>
+            <div class="col-md-3">
+                <label for="max_price">Max Price</label>
+                <input type="number" class="form-control" id="max_price" name="max_price" value="{{ max_price }}" placeholder="Max Price">
+            </div>
+        </div>
+        <div class="row">
+            <!-- Category Filter -->
+            <div class="col-md-3">
+                <label for="category">Category</label>
+                <input type="text" class="form-control" id="category" name="category" value="{{ category }}" placeholder="Filter by category">
+            </div>
+            <!-- Brand Filter -->
+            <div class="col-md-3">
+                <label for="brand">Brand</label>
+                <input type="text" class="form-control" id="brand" name="brand" value="{{ brand }}" placeholder="Filter by brand">
+            </div>
+            <!-- Availability Filter -->
+            <div class="col-md-3">
+                <label for="availability">Availability</label>
+                <select class="form-control" id="availability" name="availability">
+                    <option value="">Any</option>
+                    <option value="in_stock" {% if availability == 'in_stock' %}selected{% endif %}>In Stock</option>
+                    <option value="out_of_stock" {% if availability == 'out_of_stock' %}selected{% endif %}>Out of Stock</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <button type="submit" class="btn btn-primary mt-4">Filter</button>
+            </div>
+        </div>
+    </form>
+
+    <!-- Product List -->
+    <div class="row">
+        {% for product in page_obj %}
+            <div class="col-md-4">
+                <div class="card">
+                    <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ product.name }}</h5>
+                        <p class="card-text">{{ product.description|truncatewords:20 }}</p>
+                        <p><strong>${{ product.price }}</strong></p>
+                        <a href="{% url 'product_detail' product.slug %}" class="btn btn-primary">View Details</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- Pagination Controls -->
+    <!-- Pagination Controls -->
+<div class="mt-4">
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            <!-- First Page -->
+            <li class="page-item {% if not page_obj.has_previous %}disabled{% endif %}">
+                <a class="page-link" href="?page=1{% if search %}&search={{ search }}{% endif %}{% if product_type %}&type={{ product_type }}{% endif %}{% if min_price %}&min_price={{ min_price }}{% endif %}{% if max_price %}&max_price={{ max_price }}{% endif %}{% if category %}&category={{ category }}{% endif %}{% if brand %}&brand={{ brand }}{% endif %}{% if availability %}&availability={{ availability }}{% endif %}">First</a>
+            </li>
+            
+            <!-- Previous Page -->
+            <li class="page-item {% if not page_obj.has_previous %}disabled{% endif %}">
+                <a class="page-link" href="{% if page_obj.has_previous %}?page={{ page_obj.previous_page_number }}{% endif %}{% if search %}&search={{ search }}{% endif %}{% if product_type %}&type={{ product_type }}{% endif %}{% if min_price %}&min_price={{ min_price }}{% endif %}{% if max_price %}&max_price={{ max_price }}{% endif %}{% if category %}&category={{ category }}{% endif %}{% if brand %}&brand={{ brand }}{% endif %}{% if availability %}&availability={{ availability }}{% endif %}">Previous</a>
+            </li>
+
+            <!-- Current Page -->
+            <li class="page-item disabled">
+                <span class="page-link">{{ page_obj.number }}</span>
+            </li>
+
+            <!-- Next Page -->
+            <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
+                <a class="page-link" href="{% if page_obj.has_next %}?page={{ page_obj.next_page_number }}{% endif %}{% if search %}&search={{ search }}{% endif %}{% if product_type %}&type={{ product_type }}{% endif %}{% if min_price %}&min_price={{ min_price }}{% endif %}{% if max_price %}&max_price={{ max_price }}{% endif %}{% if category %}&category={{ category }}{% endif %}{% if brand %}&brand={{ brand }}{% endif %}{% if availability %}&availability={{ availability }}{% endif %}">Next</a>
+            </li>
+
+            <!-- Last Page -->
+            <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
+                <a class="page-link" href="{% if page_obj.has_next %}?page={{ page_obj.paginator.num_pages }}{% endif %}{% if search %}&search={{ search }}{% endif %}{% if product_type %}&type={{ product_type }}{% endif %}{% if min_price %}&min_price={{ min_price }}{% endif %}{% if max_price %}&max_price={{ max_price }}{% endif %}{% if category %}&category={{ category }}{% endif %}{% if brand %}&brand={{ brand }}{% endif %}{% if availability %}&availability={{ availability }}{% endif %}">Last</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+</div>
+{% endblock %}
