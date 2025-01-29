@@ -5,7 +5,7 @@ from django.conf import settings
 from django.template.loader import render_to_string
 from django.http import HttpResponseForbidden
 from .forms import AccessCodeForm
-from luzysonido.settings import EMAIL_HOST_USER
+from roofing.settings import EMAIL_HOST_USER
 
 
 def home(request):
@@ -13,7 +13,7 @@ def home(request):
     faqs = FAQ.objects.all()
     authors = Author.objects.all()[:3]
     carousel = Carousel.objects.filter(title="home-cover").first()
-    images = carousel.images.all()
+    images = carousel.images.all() if carousel else []
     return render(
         request,
         "blog/home.html",
