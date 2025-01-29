@@ -1,6 +1,7 @@
 from django.db import models
 from blog.utils import validate_image_size, compress_and_optimize_image
 from django.utils.text import slugify
+import hashlib
 
 
 class Category(models.Model):
@@ -71,3 +72,44 @@ class Variation(models.Model):
         return (self.product.price + self.price_adjustment) * (
             1 - self.product.discount_percentage / 100
         )
+
+
+class Order(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True)
+    total_price = models.DecimalField(max_digits=10, decimal_places=2)
+    status = models.CharField(max_length=20, default="Pending")
+    access_key = models.CharField(max_length=255, unique=True, blank=True)
+
+    # Customer Details
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    email = models.EmailField()
+    phone_number = models.CharField(max_length=15, blank=True, null=True)
+    shipping_address = models.TextField()
+    access_key = models.CharField(max_length=255, blank=True)
+
+    def generate_access_key(self):
+        """Generate a consistent access key based on the user's email."""
+        # Create a hash of the user's email (or user ID) for the access key
+        return hashlib.sha256(self.email.encode("utf-8")).hexdigest()
+
+    def save(self, *args, **kwargs):
+        """Override save to set access key."""
+        if not self.access_key:
+            self.access_key = self.generate_access_key()
+        print(f"Saving order with access_key: {self.access_key}")  # Debugging line
+
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"Order #{self.id} - {self.status}"
+
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, related_name="items", on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField()
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+
+    def __str__(self):
+        return f"{self.product.name} x {self.quantity}"

@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Checkout</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="first_name">First Name</label>
+            <input type="text" name="first_name" id="first_name" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="last_name">Last Name</label>
+            <input type="text" name="last_name" id="last_name" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" name="email" id="email" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="phone_number">Phone Number</label>
+            <input type="text" name="phone_number" id="phone_number" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="shipping_address">Shipping Address</label>
+            <textarea name="shipping_address" id="shipping_address" class="form-control" required></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Place Order</button>
+    </form>
+{% endblock %}
