@@ -1,18 +1,9 @@
 from django.db import models
 from django.core.validators import MinLengthValidator
-from django.core.exceptions import ValidationError
-from .utils import compress_and_optimize_image
+from .utils import compress_and_optimize_image, validate_image_size
 
 
 # Create your models here.
-
-
-def validate_image_size(image):
-    """Validates image size to ensure it doesn't exceed a specific limit."""
-    filesize = image.file.size
-    limit_mb = 10  # Max size in MB
-    if filesize > limit_mb * 1024 * 1024:
-        raise ValidationError(f"Max size of image is {limit_mb} MB")
 
 
 class Tag(models.Model):

@@ -1,6 +1,7 @@
 from PIL import Image
 from io import BytesIO
 from django.core.files.uploadedfile import InMemoryUploadedFile
+from django.core.exceptions import ValidationError
 
 
 def compress_and_optimize_image(image, max_width=800, max_height=800, quality=85):
@@ -32,3 +33,11 @@ def compress_and_optimize_image(image, max_width=800, max_height=800, quality=85
     return InMemoryUploadedFile(
         img_io, None, image.name, "image/jpeg", img_io.getbuffer().nbytes, None
     )
+
+
+def validate_image_size(image):
+    """Validates image size to ensure it doesn't exceed a specific limit."""
+    filesize = image.file.size
+    limit_mb = 10  # Max size in MB
+    if filesize > limit_mb * 1024 * 1024:
+        raise ValidationError(f"Max size of image is {limit_mb} MB")
