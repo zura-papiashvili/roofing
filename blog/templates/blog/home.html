@@ -31,15 +31,15 @@
 </div>
 <div class="container mt-4">
     <div class="text-center mb-4" data-aos="fade-up">
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLSekhdaorQRJHdRLAQX-UkUhnNe70nWLWcORJ6G_rc-mOUJemw/viewform?fbclid=IwZXh0bgNhZW0CMTEAAR2a0PrbCKNEfmqBdub2RY_l4H-boSy6Wkbe5UKEsmdHLKaUd0J0BbhY0Fw_aem_wGCXZE1LxgoZOG2woqhlTA" class="btn btn-gold" target="_blank" rel="noopener noreferrer" style="background-color: #b08e19;">Quiero Iniciarme</a>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSekhdaorQRJHdRLAQX-UkUhnNe70nWLWcORJ6G_rc-mOUJemw/viewform?fbclid=IwZXh0bgNhZW0CMTEAAR2a0PrbCKNEfmqBdub2RY_l4H-boSy6Wkbe5UKEsmdHLKaUd0J0BbhY0Fw_aem_wGCXZE1LxgoZOG2woqhlTA" class="btn btn-gold" target="_blank" rel="noopener noreferrer" style="background-color:rgb(81, 105, 93);">I Want to Start</a>
     </div>
     <div class="text-center mb-4" data-aos="fade-up">
-        <a href="{% url 'restricted' %}" class="btn btn-gold" target="_blank" rel="noopener noreferrer" style="background-color: #b08e19;">Para Iniciados</a>
+        <a href="{% url 'restricted' %}" class="btn btn-gold" target="_blank" rel="noopener noreferrer" style="background-color:rgb(81, 105, 93);">For Initiates</a>
     </div>
-    <h2 class="mb-4 text-center" data-aos="fade-up">Nuevos Videos</h2>
+    <h2 class="mb-4 text-center" data-aos="fade-up">New Videos</h2>
     <div class="row">
         {% for post in posts %}
-            <div class="col-md-4 mb-4 d-flex align-items-stretch" data-aos="fade-left">
+            <div class="col-md-4 mb-4 d-flex align-items-stretch" data-aos="fade-up">
                 <div class="card shadow border-0 w-100 fade-up" style="border-radius: 15px; overflow: hidden;">
                     <div class="card-body p-4 d-flex flex-column">
                         <h3 class="card-title text-primary fw-bold">{{ post.title }}</h3>
@@ -60,23 +60,23 @@
             </div>
         {% empty %}
             <div class="alert alert-warning text-center" role="alert" data-aos="fade-up">
-                Videos no disponibles.
+                Videos not available.
             </div>
         {% endfor %}
     </div>
 </div>
 <div class="text-center mt-4" data-aos="fade-up">
-    <a href="{% url 'posts' %}" class="btn btn-primary" style="background-color: #b08e19;"> Ver Todos los Videos</a>
+    <a href="{% url 'posts' %}" class="btn btn-primary" style="background-color:rgb(81, 105, 93);"> See All Videos</a>
 </div>
 
 <!-- FAQ Section using Bootstrap Accordion -->
 <div class="container mt-5">
-    <h2 class="text-center mb-4 text-primary" data-aos="fade-up">Preguntas Frecuentes</h2>
+    <h2 class="text-center mb-4 text-primary" data-aos="fade-up">Frequently Asked Questions</h2>
     <div class="accordion" id="faqAccordion">
         {% for faq in faqs %}
-            <div class="accordion-item mb-3 shadow-sm rounded-3" data-aos="fade-right">
+            <div class="accordion-item mb-3 shadow-sm rounded-3" data-aos="fade-up">
                 <h2 class="accordion-header" id="heading{{ forloop.counter }}">
-                    <button style="background-color: #b08e19;" class="accordion-button text-white border-0 rounded-3 p-3 {% if forloop.first %}collapsed{% endif %}" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ forloop.counter }}" aria-expanded="false" aria-controls="collapse{{ forloop.counter }}">
+                    <button style="background-color:rgb(81, 105, 93);" class="accordion-button text-white border-0 rounded-3 p-3 {% if forloop.first %}collapsed{% endif %}" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ forloop.counter }}" aria-expanded="false" aria-controls="collapse{{ forloop.counter }}">
                         <i class="fas fa-question-circle me-2"></i>{{ faq.question }}
                     </button>
                 </h2>
@@ -92,14 +92,14 @@
 
 <!-- Authors Section -->
 <div class="container mt-5">
-    <h2 class="text-center mb-4 text-primary" data-aos="fade-up">Autores Destacados</h2>
+    <h2 class="text-center mb-4 text-primary" data-aos="fade-up">Our Team</h2>
     <div class="row">
         {% for author in authors %}
             <div class="col-md-4 mb-4 d-flex align-items-stretch" data-aos="fade-up">
                 <div class="card shadow border-0 w-100 fade-up" style="border-radius: 15px; overflow: hidden;">
                     <div class="card-body p-4 d-flex flex-column text-center">
                         <img src="{{ author.image.url }}" class="rounded-circle mb-3" alt="{{ author.name }}" style="width: 100px; height: 100px; object-fit: cover;">
-                        <h3 class="card-title text-primary fw-bold">{{ author.name }}</h3>
+                        <h3 class="card-title text-primary fw-bold">{{ author.first_name  }} {{ author.last_name }}</h3>
                         <p class="card-text text-muted">{{ author.bio }}</p>
                         <div class="mt-auto">
                             <!-- Add any additional content here if needed -->
@@ -109,12 +109,12 @@
             </div>
         {% empty %}
             <div class="alert alert-warning text-center" role="alert" data-aos="fade-up">
-                Autores no disponibles.
+                Authors not available.
             </div>
         {% endfor %}
     </div>
-    <div class="text-center mt-4" data-aos="fade-right">
-        <a href="{% url 'about' %}" class="btn btn-gold" style="background-color: #b08e19;"> Ver Todos los Autores</a>
+    <div class="text-center mt-4" data-aos="fade-up">
+        <a href="{% url 'about' %}" class="btn btn-gold" style="background-color:rgb(81, 105, 93);"> See All Authors</a>
     </div>
 </div>
 
