@@ -1,5 +1,6 @@
 from django.shortcuts import get_object_or_404, render
 from .models import Author, Post, FAQ, Carousel, RestrictedPage
+from store.models import Product
 from django.core.mail import send_mail
 from django.conf import settings
 from django.template.loader import render_to_string
@@ -14,10 +15,17 @@ def home(request):
     authors = Author.objects.all()[:3]
     carousel = Carousel.objects.filter(title="home-cover").first()
     images = carousel.images.all() if carousel else []
+    products = Product.objects.all()[:3]
     return render(
         request,
         "blog/home.html",
-        {"posts": posts, "faqs": faqs, "authors": authors, "carousel": images},
+        {
+            "posts": posts,
+            "faqs": faqs,
+            "authors": authors,
+            "carousel": images,
+            "products": products,
+        },
     )
 
 

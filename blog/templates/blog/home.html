@@ -30,12 +30,35 @@
     </button>
 </div>
 <div class="container mt-4">
-    <div class="text-center mb-4" data-aos="fade-up">
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLSekhdaorQRJHdRLAQX-UkUhnNe70nWLWcORJ6G_rc-mOUJemw/viewform?fbclid=IwZXh0bgNhZW0CMTEAAR2a0PrbCKNEfmqBdub2RY_l4H-boSy6Wkbe5UKEsmdHLKaUd0J0BbhY0Fw_aem_wGCXZE1LxgoZOG2woqhlTA" class="btn btn-gold" target="_blank" rel="noopener noreferrer" style="background-color:rgb(81, 105, 93);">I Want to Start</a>
+    <!-- Products Section -->
+    <h2 class="mb-4 text-center" data-aos="fade-up">Our Products</h2>
+    <div class="row">
+        {% for product in products %}
+            <div class="col-md-4 mb-4 d-flex align-items-stretch" data-aos="fade-up">
+                <div class="card shadow border-0 w-100 fade-up" style="border-radius: 15px; overflow: hidden;">
+                    <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}" style="object-fit: cover; height: 200px;">
+                    <div class="card-body p-4 d-flex flex-column">
+                        <h3 class="card-title text-primary fw-bold">{{ product.name }}</h3>
+                        <p class="card-text text-muted">{{ product.description }}</p>
+                        <div class="mt-auto">
+                            <p class="text-primary fw-bold">${{ product.price }}</p>
+                            <a href="{% url 'product_detail' product.id %}" class="btn btn-primary" style="background-color:rgb(81, 105, 93);">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="alert alert-warning text-center" role="alert" data-aos="fade-up">
+                Products not available.
+            </div>
+        {% endfor %}
     </div>
-    <div class="text-center mb-4" data-aos="fade-up">
-        <a href="{% url 'restricted' %}" class="btn btn-gold" target="_blank" rel="noopener noreferrer" style="background-color:rgb(81, 105, 93);">For Initiates</a>
+    <div class="text-center mt-4" data-aos="fade-up">
+        <a href="{% url 'product_list' %}" class="btn btn-primary" style="background-color:rgb(81, 105, 93);"> See All Products</a>
     </div>
+
+    <hr>
+    
     <h2 class="mb-4 text-center" data-aos="fade-up">New Videos</h2>
     <div class="row">
         {% for post in posts %}
