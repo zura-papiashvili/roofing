@@ -1,9 +1,17 @@
 from decimal import Decimal
+import json
 from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render
 from .models import Order, OrderItem, Product
+
+import stripe
+from django.conf import settings
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+
+stripe.api_key = settings.STRIPE_SECRET_KEY
 
 
 def product_list(request):
@@ -117,46 +125,6 @@ def remove_from_cart(request, product_id):
     return redirect("cart")
 
 
-# Checkout
-def checkout(request):
-    if request.method == "POST":
-        cart = request.session.get("cart", {})
-        total_price = Decimal(0)
-
-        # Create order
-        order = Order.objects.create(
-            first_name=request.POST["first_name"],
-            last_name=request.POST["last_name"],
-            email=request.POST["email"],
-            phone_number=request.POST["phone_number"],
-            shipping_address=request.POST["shipping_address"],
-            total_price=total_price,
-        )
-
-        # Add order items
-        for product_id, item in cart.items():
-            product = Product.objects.get(id=product_id)
-            item_total = Decimal(item["price"]) * item["quantity"]
-            total_price += item_total
-            OrderItem.objects.create(
-                order=order,
-                product=product,
-                quantity=item["quantity"],
-                price=item["price"],
-            )
-
-        # Update order total price
-        order.total_price = total_price
-        order.save()
-        request.session["order_access_key"] = order.access_key
-        # Clear the cart
-        request.session["cart"] = {}
-        print(order.id)
-        return redirect("order_detail", orderId=order.id)
-
-    return render(request, "store/checkout.html")
-
-
 # Order Details
 def order_detail(request, orderId):
     print(orderId)
@@ -168,3 +136,96 @@ def order_detail(request, orderId):
     print(order)
     # Render the order details
     return render(request, "store/order_detail.html", {"order": order})
+
+
+def checkout(request):
+    cart = request.session.get("cart", {})
+    total_price = Decimal(0)
+    cart_items = []
+
+    # Calculate the total price for the cart and prepare cart details
+    for product_id, item in cart.items():
+        try:
+            product = Product.objects.get(id=product_id)
+            item_total = Decimal(item["price"]) * item["quantity"]
+            total_price += item_total
+            cart_items.append(
+                {
+                    "product": product,
+                    "quantity": item["quantity"],
+                    "price": item["price"],
+                    "item_total": item_total,
+                }
+            )
+        except Product.DoesNotExist:
+            continue  # Skip any products that don't exist
+
+    total_price_cents = int(total_price * 100)  # Convert to cents
+
+    if request.method == "POST":
+        # Create the order
+        order = Order.objects.create(
+            first_name=request.POST["first_name"],
+            last_name=request.POST["last_name"],
+            email=request.POST["email"],
+            phone_number=request.POST["phone_number"],
+            shipping_address=request.POST["shipping_address"],
+            total_price=total_price,
+        )
+
+        # Add order items
+        for product_id, item in cart.items():
+            try:
+                product = Product.objects.get(id=product_id)
+                item_total = Decimal(item["price"]) * item["quantity"]
+                OrderItem.objects.create(
+                    order=order,
+                    product=product,
+                    quantity=item["quantity"],
+                    price=item["price"],
+                )
+            except Product.DoesNotExist:
+                continue  # Skip any products that don't exist
+
+        # Update order total price in case of any adjustments
+        order.total_price = total_price
+        order.save()
+
+        # Store order access key in the session
+        request.session["order_access_key"] = order.access_key
+
+        # Clear the cart
+        request.session["cart"] = {}
+
+        # Redirect to the order detail page
+        return redirect("order_detail", orderId=order.id)
+
+    # Render the checkout page with the total price and order details
+    return render(
+        request,
+        "store/checkout.html",
+        {
+            "total_price": total_price_cents,
+            "cart_items": cart_items,
+            "total_price_display": total_price,
+        },
+    )
+
+
+@csrf_exempt
+def create_payment_intent(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        amount = data.get("amount")
+
+        if not amount:
+            return JsonResponse({"error": "Amount is required."}, status=400)
+
+        try:
+            payment_intent = stripe.PaymentIntent.create(
+                amount=amount,
+                currency="usd",
+            )
+            return JsonResponse({"clientSecret": payment_intent.client_secret})
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=400)

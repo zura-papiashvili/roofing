@@ -1,30 +1,140 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>Checkout</h1>
-    <form method="POST">
-        {% csrf_token %}
-        <div class="form-group">
-            <label for="first_name">First Name</label>
-            <input type="text" name="first_name" id="first_name" class="form-control" required>
-        </div>
-        <div class="form-group">
-            <label for="last_name">Last Name</label>
-            <input type="text" name="last_name" id="last_name" class="form-control" required>
-        </div>
-        <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" name="email" id="email" class="form-control" required>
-        </div>
-        <div class="form-group">
-            <label for="phone_number">Phone Number</label>
-            <input type="text" name="phone_number" id="phone_number" class="form-control">
-        </div>
-        <div class="form-group">
-            <label for="shipping_address">Shipping Address</label>
-            <textarea name="shipping_address" id="shipping_address" class="form-control" required></textarea>
-        </div>
+<script src="https://js.stripe.com/v3/"></script>
 
-        <button type="submit" class="btn btn-primary">Place Order</button>
-    </form>
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Checkout</h1>
+
+    <!-- Display Cart Items -->
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-lg">
+                <div class="card-body">
+                    <h4 class="mb-3">Order Summary</h4>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in cart_items %}
+                                <tr>
+                                    <td>{{ item.product.name }}</td>
+                                    <td>{{ item.quantity }}</td>
+                                    <td>${{ item.price }}</td>
+                                    <td>${{ item.item_total }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <hr>
+                    <h5 class="text-right">Total: ${{ total_price_display }}</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Customer Information Form -->
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-lg">
+                <div class="card-body">
+                    <form id="checkout-form" method="POST">
+                        {% csrf_token %}
+                        
+                        <h4 class="mb-3">Customer Information</h4>
+                        <div class="form-group">
+                            <label for="first_name">First Name</label>
+                            <input type="text" name="first_name" id="first_name" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="last_name">Last Name</label>
+                            <input type="text" name="last_name" id="last_name" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" name="email" id="email" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone_number">Phone Number</label>
+                            <input type="text" name="phone_number" id="phone_number" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="shipping_address">Shipping Address</label>
+                            <textarea name="shipping_address" id="shipping_address" class="form-control" required></textarea>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <!-- Stripe Payment Fields -->
+                        <h4 class="mb-3">Payment Information</h4>
+                        <div class="form-group">
+                            <label for="card-element">Credit or Debit Card</label>
+                            <div id="card-element" class="border p-3 rounded">
+                                <!-- A Stripe Element will be inserted here -->
+                            </div>
+                            <div id="card-errors" role="alert" class="text-danger mt-2"></div>
+                        </div>
+
+                        <div class="form-group text-center">
+                            <button type="submit" class="btn btn-primary btn-lg">Place Order</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Set your Stripe public key here
+    const stripe = Stripe('pk_test_51QnrsRKtLkF7GLy08vZxw1ftlikNpekK4iLaEOyoThvieYXIG6yflgfdYCMfoXadR6bvv6VBJLJI8MThoaB5l5AI00F4WO8yxG'); // Replace with your publishable key
+    const elements = stripe.elements();
+    const card = elements.create('card');
+    card.mount('#card-element'); // Mount the card element to the DOM
+
+    const checkoutForm = document.getElementById('checkout-form');
+    checkoutForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        // Get the payment amount (e.g., from a hidden input, JavaScript variable, etc.)
+        const amount = {{ total_price|floatformat:0 }}; // You can use the variable directly
+
+        // Create a PaymentIntent on the server
+        const response = await fetch('create-payment-intent/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ amount: amount })
+        });
+        const data = await response.json();
+        const clientSecret = data.clientSecret;
+
+        const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
+            payment_method: {
+                card: card,
+                billing_details: {
+                    name: document.getElementById('first_name').value + ' ' + document.getElementById('last_name').value,
+                    email: document.getElementById('email').value,
+                    phone: document.getElementById('phone_number').value,
+                    address: {
+                        line1: document.getElementById('shipping_address').value,
+                    }
+                }
+            }
+        });
+
+        if (error) {
+            document.getElementById('card-errors').textContent = error.message;
+        } else if (paymentIntent.status === 'succeeded') {
+            alert('Payment Successful!');
+            checkoutForm.submit();  // Optionally, submit the form here after success
+        }
+    });
+</script>
+
 {% endblock %}

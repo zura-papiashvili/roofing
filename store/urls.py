@@ -11,4 +11,10 @@ urlpatterns = [
     path("checkout/", views.checkout, name="checkout"),
     path("<slug:slug>/", views.product_detail, name="product_detail"),
     path("order/<int:orderId>/", views.order_detail, name="order_detail"),
+    # Add the path for creating a PaymentIntent
+    path(
+        "checkout/create-payment-intent/",
+        views.create_payment_intent,
+        name="create_payment_intent",
+    ),
 ]
