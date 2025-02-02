@@ -163,7 +163,7 @@ def checkout(request):
     total_price_cents = int(total_price * 100)  # Convert to cents
 
     if request.method == "POST":
-        # Create the order
+        # Create order
         order = Order.objects.create(
             first_name=request.POST["first_name"],
             last_name=request.POST["last_name"],
@@ -190,6 +190,22 @@ def checkout(request):
         # Update order total price in case of any adjustments
         order.total_price = total_price
         order.save()
+
+        # Create a PaymentIntent with metadata
+        stripe.api_key = (
+            settings.STRIPE_SECRET_KEY
+        )  # Make sure to set your Stripe secret key
+        intent = stripe.PaymentIntent.create(
+            amount=total_price_cents,
+            currency="usd",  # Set the currency as needed
+            metadata={
+                "order_id": order.id,
+                "customer_name": f"{order.first_name} {order.last_name}",
+                "cart_items": str(
+                    cart_items
+                ),  # Store cart items as metadata for tracking
+            },
+        )
 
         # Store order access key in the session
         request.session["order_access_key"] = order.access_key
